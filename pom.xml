@@ -6,13 +6,39 @@
 
     <groupId>me.nathanfallet.connect4</groupId>
     <artifactId>connect-four-javafx</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
+
     <name>connect-four-javafx</name>
+    <description>A connect4 built in Kotlin using JavaFX (why not?)</description>
+    <url>http://www.nathanfallet.me</url>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License v3.0</name>
+            <url>https://opensource.org/licenses/GPL-3.0</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>NathanFallet</id>
+            <name>Nathan Fallet</name>
+            <email>contact@nathanfallet.me</email>
+            <url>https://www.nathanfallet.me</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/nathanfallet/connect-four-javafx.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/nathanfallet/connect-four-javafx.git</developerConnection>
+        <url>https://github.com/nathanfallet/connect-four-javafx.git</url>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.9.2</junit.version>
-        <kotlin.version>1.8.22</kotlin.version>
+        <kotlin.version>1.9.20</kotlin.version>
+        <dokka.version>1.9.10</dokka.version>
     </properties>
 
     <dependencies>
@@ -45,6 +71,13 @@
             <version>${kotlin.version}</version>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
@@ -103,6 +136,45 @@
                 </executions>
                 <configuration>
                     <jvmTarget>11</jvmTarget>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jetbrains.dokka</groupId>
+                <artifactId>dokka-maven-plugin</artifactId>
+                <version>${dokka.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>javadocJar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.13</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
         </plugins>
